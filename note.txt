@@ -1,0 +1,2 @@
+$ docker exec -it 138778bc9f91 bash
+$ psql  -U full_stack_user -d full_stack_dev
