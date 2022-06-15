@@ -1,4 +1,4 @@
-import client from "../../database";
+import client from "../database";
 // ts-ignore
 
 export type User = {
@@ -36,15 +36,15 @@ export class userStore { // getting all users
     }
 
     // creating a new user
-    async create(firstName : string, lastName : string, userName : string, passowrd : string): Promise < User[] > {
+    async create(firstName : string, lastName : string, userName : string, password : any): Promise < User[] > {
         try {
             const conn = await client.connect();
-            const sql = 'INSERT INTO users VALUES ($1,$2,$3,$4);'
-            const result = await conn.query(sql, [firstName, lastName, userName, passowrd]);
+            const sql = 'INSERT INTO users (firstname , lastname , username , password) VALUES ($1,$2,$3,$4) RETURNING *;'
+            const result = await conn.query(sql, [firstName, lastName, userName, password]);
             conn.release();
             return result.rows[0];
         } catch (err) {
-            throw new Error(`Cannot create new user: ${err}`)
+            throw new Error(`Cannot create new user: ${err}`);
         }
     }
 

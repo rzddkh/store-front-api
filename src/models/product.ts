@@ -1,4 +1,4 @@
-import client from "../../database";
+import client from "../database";
 // @ts-ignore
 export type Product = {
     id: number,
@@ -8,7 +8,7 @@ export type Product = {
 }
 
 
-export class product {
+export class productStore {
 
     async index(): Promise < Product[] > {
         try {
@@ -49,6 +49,7 @@ export class product {
             throw new Error(`Cannot get products ${err}`);
         }
     }
+
     async topFive() {}
     async byCategory() {}
 
