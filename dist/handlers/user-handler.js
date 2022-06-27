@@ -39,33 +39,48 @@ exports.__esModule = true;
 var user_1 = require("../models/user");
 var store = new user_1.userStore;
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user;
+    var users, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.index()];
             case 1:
-                user = _a.sent();
-                res.json(user);
-                return [2 /*return*/];
+                users = _a.sent();
+                res.json(users);
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                res.status(400);
+                res.json(err_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, user;
+    var id, user, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                _a.trys.push([0, 2, , 3]);
                 id = parseInt(req.params.id);
                 return [4 /*yield*/, store.show(id)];
             case 1:
                 user = _a.sent();
                 res.json(user);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                res.status(400);
+                res.json(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, firstname, lastname, username, password, createUser, err_1;
+    var _a, firstname, lastname, username, password, createUser, err_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -74,12 +89,12 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 return [4 /*yield*/, store.create(firstname, lastname, username, password)];
             case 1:
                 createUser = _b.sent();
-                res.send(createUser);
+                res.json(createUser);
                 return [3 /*break*/, 3];
             case 2:
-                err_1 = _b.sent();
+                err_3 = _b.sent();
                 res.status(400);
-                res.json(err_1);
+                res.json(err_3);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

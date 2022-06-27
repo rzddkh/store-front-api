@@ -36,7 +36,8 @@ export class userStore { // getting all users
     }
 
     // creating a new user
-    async create(firstName : string, lastName : string, userName : string, password : any): Promise < User[] > {
+    async create(firstName : string, lastName : string, userName : string, password : string): Promise < User[] > {
+        
         try {
             const conn = await client.connect();
             const sql = 'INSERT INTO users (firstname , lastname , username , password) VALUES ($1,$2,$3,$4) RETURNING *;'

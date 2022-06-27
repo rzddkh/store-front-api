@@ -7,7 +7,7 @@ export type Order = {
 }
 
 export class orderStore { // current orders by user with active status
-    async getActive(user_id : number, status : string): Promise < Order[] > {
+    async getOrder(user_id : number, status : string): Promise < Order[] > {
         try {
             const conn = await client.connect();
             const sql = 'SELECT * FROM orders WHERE user_id=($1) AND status=($2);'
@@ -19,30 +19,49 @@ export class orderStore { // current orders by user with active status
         }
     }
 
-    async getComplete(user_id : number, status : string): Promise < Order[] > {
-        try {
-            const conn = await client.connect();
-            const sql = 'SELECT * FROM orders WHERE user_id=($1) AND status=($2);'
-            const result = await conn.query(sql, [user_id, status]);
-            conn.release();
-            return result.rows;
-        } catch (err) {
-            throw new Error(`Cannot get orders. ${err}`);
-        }
-    }
 
     // add a product to an order
-    async addProduct(order_id : number, product_id : number, quantity : number): Promise < Order[] > {
+    async addToOrder(order_id : number, product_id : number, quantity : number): Promise < Order[] > {
 
         try {
             const conn = await client.connect();
-            const sql = 'INSERT INTO order_product VALUES ($1,$2,$3);'
-            const result = await conn.query(sql, [order_id, product_id, quantity]);
+
+            //check to see product exist already in the order or not
+            //if yes we update the quanity by adding if not we add the product to order
+            const sqlExist='SELECT quantity FROM order_product WHERE order_id=($1) AND product_id=($2);'
+            const resultExist= await conn.query(sqlExist,[order_id,product_id]);
+            const existingQuantity= resultExist.rows[0] ;
+            let order =null;
+
+            if (existingQuantity==undefined){
+                const sql = 'INSERT INTO order_product (order_id, product_id, quantity) VALUES ($1,$2,$3);'
+                const result = await conn.query(sql, [order_id, product_id, quantity]);
+                order = result.rows[0];
+             
+            }else{
+                const quant :number = existingQuantity.quantity + +quantity;
+                const sql = 'UPDATE order_product SET quantity=($1) WHERE order_id=($2) AND product_id=($3);'
+                const result = await conn.query(sql,[quant,order_id,product_id]);
+                order= result.rows[0];
+            }
+            
+            conn.release();
+            return order;
+        } catch (err) {
+            throw new Error(`: ${err}`);
+        }
+    }
+
+    async create(user_id : number): Promise < Order[] > {
+        try {
+            const conn = await client.connect();
+            const sql = 'INSERT INTO orders (user_id,status) VALUES ($1,$2);'
+            const result = await conn.query(sql, [user_id, 'active']);
             const order = result.rows[0];
             conn.release();
             return order;
         } catch (err) {
-            throw new Error(`Cannot add product ${product_id} to order ${order_id}: ${err}`);
+            throw new Error(`Cannot Add a new order : ${err}.`);
         }
     }
 
