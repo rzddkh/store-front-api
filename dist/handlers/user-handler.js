@@ -35,8 +35,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
+// @ts-nocheck
+// @ts-ignore
 var user_1 = require("../models/user");
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var dotenv_1 = __importDefault(require("dotenv"));
+var authenticateMiddleWare_1 = __importDefault(require("../utils/authenticateMiddleWare"));
+dotenv_1["default"].config();
 var store = new user_1.userStore;
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users, err_1;
@@ -100,9 +109,39 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
         }
     });
 }); };
+var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var TOKEN_SECRET, _a, username, password, authen, token, err_4;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 2, , 3]);
+                TOKEN_SECRET = process.env.TOKEN_SECRET;
+                _a = req.body, username = _a.username, password = _a.password;
+                return [4 /*yield*/, store.authenticate(username, password)];
+            case 1:
+                authen = _b.sent();
+                // if password is correct it generates a token
+                if (authen) {
+                    token = jsonwebtoken_1["default"].sign(authen, TOKEN_SECRET);
+                    res.json({ "access token": token });
+                }
+                else {
+                    res.send('Invalid username or password! Cannot Generate Token!');
+                }
+                return [3 /*break*/, 3];
+            case 2:
+                err_4 = _b.sent();
+                res.status(400);
+                res.json(err_4);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 var user_routes = function (app) {
-    app.get('/users', index);
-    app.get('/users/:id', show);
-    app.post('/adduser', create);
+    app.get('/users', authenticateMiddleWare_1["default"], index);
+    app.get('/users/:id', authenticateMiddleWare_1["default"], show);
+    app.post('/adduser', authenticateMiddleWare_1["default"], create);
+    app.post('/authenticate', authenticate);
 };
 exports["default"] = user_routes;

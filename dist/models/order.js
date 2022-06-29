@@ -83,9 +83,9 @@ var orderStore = /** @class */ (function () {
                         return [4 /*yield*/, conn.query(sqlExist, [order_id, product_id])];
                     case 2:
                         resultExist = _a.sent();
-                        existingQuantity = resultExist.rows[0];
+                        existingQuantity = resultExist.rows;
                         order = null;
-                        if (!(existingQuantity == undefined)) return [3 /*break*/, 4];
+                        if (!!existingQuantity.length) return [3 /*break*/, 4];
                         sql = 'INSERT INTO order_product (order_id, product_id, quantity) VALUES ($1,$2,$3);';
                         return [4 /*yield*/, conn.query(sql, [order_id, product_id, quantity])];
                     case 3:
@@ -93,7 +93,7 @@ var orderStore = /** @class */ (function () {
                         order = result.rows[0];
                         return [3 /*break*/, 6];
                     case 4:
-                        quant = existingQuantity.quantity + +quantity;
+                        quant = existingQuantity[0].quantity + +quantity;
                         sql = 'UPDATE order_product SET quantity=($1) WHERE order_id=($2) AND product_id=($3);';
                         return [4 /*yield*/, conn.query(sql, [quant, order_id, product_id])];
                     case 5:

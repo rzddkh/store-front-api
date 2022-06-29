@@ -39,71 +39,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var order_1 = require("../models/order");
-var authenticateMiddleWare_1 = __importDefault(require("../utils/authenticateMiddleWare"));
-var store = new order_1.orderStore;
-var activeOrder = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user_id, order;
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1["default"].config();
+var TOKEN_SECRET = process.env.TOKEN_SECRET;
+var verifyAuthToken = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var authorizationHeader, token;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                user_id = req.params.id;
-                return [4 /*yield*/, store.getOrder(parseInt(user_id), 'active')];
-            case 1:
-                order = _a.sent();
-                res.json(order);
-                return [2 /*return*/];
+        try {
+            authorizationHeader = req.headers.authorization;
+            token = authorizationHeader.split(' ')[1];
+            jsonwebtoken_1["default"].verify(token, TOKEN_SECRET);
+            next();
         }
+        catch (err) {
+            res.status(401);
+            res.send('Invalid Token. Authorization failed!');
+        }
+        return [2 /*return*/];
     });
 }); };
-var completedOrder = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user_id, order;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                user_id = req.params.id;
-                return [4 /*yield*/, store.getOrder(parseInt(user_id), 'complete')];
-            case 1:
-                order = _a.sent();
-                res.json(order);
-                return [2 /*return*/];
-        }
-    });
-}); };
-// Add a new product to an exisiting order
-var addToOrder = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, order_id, product_id, quantity, order;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.body, order_id = _a.order_id, product_id = _a.product_id, quantity = _a.quantity;
-                return [4 /*yield*/, store.addToOrder(order_id, product_id, quantity)];
-            case 1:
-                order = _b.sent();
-                res.send('Item is added to the order');
-                return [2 /*return*/];
-        }
-    });
-}); };
-// create new active order for user
-var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user_id, order;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                user_id = req.params.id;
-                return [4 /*yield*/, store.create(parseInt(user_id))];
-            case 1:
-                order = _a.sent();
-                res.json(order);
-                return [2 /*return*/];
-        }
-    });
-}); };
-var order_routes = function (app) {
-    app.get('/activeorder/:id', authenticateMiddleWare_1["default"], activeOrder);
-    app.get('/completedorder/:id', authenticateMiddleWare_1["default"], completedOrder);
-    app.post('/addtoorder', authenticateMiddleWare_1["default"], addToOrder);
-    app.post('/createorder/:id', authenticateMiddleWare_1["default"], create);
-};
-exports["default"] = order_routes;
+exports["default"] = verifyAuthToken;

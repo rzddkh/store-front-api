@@ -1,5 +1,12 @@
+// @ts-nocheck
+// @ts-ignore
 import {userStore} from "../models/user";
 import express, {Request, Response} from 'express';
+import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
+import verifyAuthToken from '../utils/authenticateMiddleWare';
+
+dotenv.config();
 
 const store = new userStore;
 
@@ -35,9 +42,34 @@ const create = async (req : Request, res : Response) => {
         res.json(err);
     }
 }
+
+const authenticate = async (req : Request, res : Response) => {
+    try {
+       
+        const {TOKEN_SECRET} = process.env;
+        const {username, password} = req.body;
+    
+        // here check for password
+        const authen = await store.authenticate(username, password);
+        // if password is correct it generates a token
+        if (authen) {
+            const token = jwt.sign(authen, TOKEN_SECRET);
+            res.json({"access token": token});
+        } else {
+            res.send('Invalid username or password! Cannot Generate Token!')
+        }
+
+
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
+
+}
 const user_routes = (app : express.Application) => {
-    app.get('/users', index);
-    app.get('/users/:id', show);
-    app.post('/adduser', create);
+    app.get('/users', verifyAuthToken, index);
+    app.get('/users/:id', verifyAuthToken, show);
+    app.post('/adduser', verifyAuthToken, create);
+    app.post('/authenticate', authenticate);
 }
 export default user_routes;
