@@ -43,18 +43,30 @@ const create = async (req : Request, res : Response) => {
     }
 }
 
+const deleteUser = async (req : Request, res : Response) => {
+    try {
+        const id = req.params.id;
+        await store.delete(id);
+        res.send(`user with user_id : ${id} is deleted.`);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
+}
+
 const authenticate = async (req : Request, res : Response) => {
     try {
-       
+
         const {TOKEN_SECRET} = process.env;
         const {username, password} = req.body;
-    
+
         // here check for password
         const authen = await store.authenticate(username, password);
         // if password is correct it generates a token
         if (authen) {
             const token = jwt.sign(authen, TOKEN_SECRET);
-            res.json({"access token": token});
+            const id = parseInt(authen.id);
+            res.json({"access token": token, "id": id});
         } else {
             res.send('Invalid username or password! Cannot Generate Token!')
         }
@@ -69,7 +81,8 @@ const authenticate = async (req : Request, res : Response) => {
 const user_routes = (app : express.Application) => {
     app.get('/users', verifyAuthToken, index);
     app.get('/users/:id', verifyAuthToken, show);
-    app.post('/adduser', verifyAuthToken, create);
+    app.post('/signup', create);
     app.post('/authenticate', authenticate);
+    app.post('/deleteuser/:id', verifyAuthToken, deleteUser);
 }
 export default user_routes;

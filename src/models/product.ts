@@ -51,6 +51,18 @@ export class productStore {
         }
     }
 
+    async deleteProd(product_id : number): Promise < Product[] > {
+        try {
+            const conn = await client.connect();
+            const sql = 'DELETE FROM products WHERE id=$1'
+            const result = await conn.query(sql, [product_id]);
+            return result.rows[0];
+
+        } catch (err) {
+            throw new Error(`Cannot remove the product ${err}.`)
+        }
+    }
+
     async topFive(): Promise < Product[] > {
 
         try {

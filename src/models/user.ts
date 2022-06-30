@@ -58,7 +58,18 @@ export class userStore { // getting all users
             throw new Error(`Cannot create new user: ${err}`);
         }
     }
-
+    // DELETE a user
+    async delete(id : number): Promise < User[] > {
+        try {
+            const conn = await client.connect();
+            const sql = 'DELETE from users WHERE id=$1;'
+            const result = await conn.query(sql, [id]);
+            conn.release();
+            return result.rows[0];
+        } catch (err) {
+            throw new Error(`cant delete the user: ${err}`);
+        }
+    }
     async authenticate(userName : string, password : string): Promise < User | null > {
         try {
             const conn = await client.connect();
