@@ -44,20 +44,37 @@ const create = async (req : Request, res : Response) => {
 // deleting a product form products table
 
 const deleteProd = async (req : Request, res : Response) => {
-    const product_id = parseInt(req.params.id);
-    const product = await store.deleteProd(product_id);
-    res.json(product);
+    try {
+        const product_id = parseInt(req.params.id);
+        const product = await store.deleteProd(product_id);
+        res.json(product);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
+
 }
 
 const byCategory = async (req : Request, res : Response) => {
-    const {category} = req.body;
-    const products = await store.byCategory(category);
-    res.json(products);
+    try {
+        const {category} = req.body;
+        const products = await store.byCategory(category);
+        res.json(products);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
+
 }
 
 const topFive = async (req : Request, res : Response) => {
-    const products = await store.topFive();
-    res.json(products);
+    try {
+        const products = await store.topFive();
+        res.json(products);
+    } catch (err) {
+        res.status(400);
+        res.json(err);
+    }
 
 }
 const product_routes = (app : express.Application) => {
