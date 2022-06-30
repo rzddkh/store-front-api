@@ -54,7 +54,7 @@ describe('Testing suite for user endpoints \n', () => { // new user to be added 
         expect(response.body[0].username).toBe('JohnDoe');
     });
 
-    //testing create end point by adding a user and removing it at DELETE endpoint test
+    // testing create end point by adding a user and removing it at DELETE endpoint test
     it("testing CREATE : '/signup' endpoint", async () => {
         const user1 = {
             "firstname": "fname",
@@ -78,7 +78,7 @@ describe('Testing suite for user endpoints \n', () => { // new user to be added 
     it("testing DELETE : '/deleteuser/:id' ", async () => {
         const response = await request.post('/authenticate').send({"username": "fl_username", "password": "passWord"});
         const id = response.body.id;
-        const response2 = await request.post(`/deleteuser/${
+        const response2 = await request.delete(`/deleteuser/${
             id
         }`).set(header);
         expect(response2.status).toEqual(200);
@@ -86,7 +86,7 @@ describe('Testing suite for user endpoints \n', () => { // new user to be added 
     })
     // after doing the test deleteing the added user from database
     afterAll(async () => {
-        await request.post(`/deleteuser/${
+        await request.delete(`/deleteuser/${
             user_id
         }`).set(header);
 

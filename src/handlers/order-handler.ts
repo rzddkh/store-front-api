@@ -31,11 +31,22 @@ const create = async (req : Request, res : Response) => {
     res.json(order);
 }
 
+const remove_from_order = async (req : Request, res : Response) => {
+
+}
+
+const deleteOrder = async (req : Request, res : Response) => {
+
+}
+
+
 const order_routes = (app : express.Application) => {
-    app.get('/activeorder/:id',verifyAuthToken, activeOrder);
-    app.get('/completedorder/:id',verifyAuthToken, completedOrder);
-    app.post('/addtoorder',verifyAuthToken, addToOrder);
-    app.post('/createorder/:id',verifyAuthToken, create);
+    app.get('/activeorder/:id', verifyAuthToken, activeOrder);
+    app.get('/completedorder/:id', verifyAuthToken, completedOrder);
+    app.post('/addtoorder', verifyAuthToken, addToOrder);
+    app.post('/createorder/:id', verifyAuthToken, create);
+    app.delete('/removefromorder', verifyAuthToken, remove_from_order);
+    app.delete('/deleteorder/:id', verifyAuthToken, deleteOrder);
 }
 
 export default order_routes;

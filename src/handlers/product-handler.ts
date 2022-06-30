@@ -67,7 +67,7 @@ const byCategory = async (req : Request, res : Response) => {
 
 }
 
-const topFive = async (req : Request, res : Response) => {
+const topFive = async (_req : Request, res : Response) => {
     try {
         const products = await store.topFive();
         res.json(products);
@@ -83,7 +83,7 @@ const product_routes = (app : express.Application) => {
     app.post('/addproduct', verifyAuthToken, create);
     app.get('/bycategory', byCategory);
     app.get('/fivemostpopular', topFive);
-    app.post('/deleteproduct/:id', verifyAuthToken, deleteProd);
+    app.delete('/deleteproduct/:id', verifyAuthToken, deleteProd);
 }
 
 
