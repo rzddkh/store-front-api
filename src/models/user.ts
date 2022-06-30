@@ -78,9 +78,11 @@ export class userStore { // getting all users
             if (result.rows.length) {
                 const user = result.rows[0]
                 if (bcrypt.compareSync(password + pepper, user.password)) {
+                    conn.release();
                     return user;
                 }
             }
+            conn.release();
             return null;
         } catch (err) {
             throw new Error(`Cannot Authenticate : ${err}`);

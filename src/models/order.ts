@@ -43,9 +43,7 @@ export class orderStore { // current orders by user with active status
                 const sql = 'UPDATE order_product SET quantity=($1) WHERE order_id=($2) AND product_id=($3);'
                 const result = await conn.query(sql, [quant, order_id, product_id]);
                 order = result.rows[0];
-            } 
-            
-            conn.release();
+            } conn.release();
 
             return order;
         } catch (err) {
@@ -53,7 +51,18 @@ export class orderStore { // current orders by user with active status
         }
     }
 
-    
+    async removeFromOrder(order_id : number, product_id : number): Promise < Order[] > {
+        try {
+            const conn = await client.connect();
+            const sql = 'DELETE FROM order_product WHERE order_id=$1  and product_id=$2;'
+            const result = await conn.query(sql, [order_id, product_id]);
+            conn.release();
+            return result.rows;
+
+        } catch (err) {
+            throw new Error(`Cannot remove the item from order : ${err}`)
+        }
+    };
 
 
     async create(user_id : number): Promise < Order[] > {
@@ -69,5 +78,16 @@ export class orderStore { // current orders by user with active status
         }
     }
 
+    async deleteOrder(order_id : number): Promise < Order[] > {
+        try {
+            const conn = await client.connect();
+            const sql = 'DELETE from orders WHERE id=$1;'
+            const result = await conn.query(sql, [order_id]);
+            return result.rows[0];
 
+        } catch (err) {
+            throw new Error(`cannot delete the order : ${err}`);
+        }
+
+    }
 }

@@ -32,11 +32,16 @@ const create = async (req : Request, res : Response) => {
 }
 
 const remove_from_order = async (req : Request, res : Response) => {
+    const {order_id, product_id} = req.body;
+    const removed = await store.removeFromOrder(order_id, product_id);
+    res.json(removed);
 
 }
 
 const deleteOrder = async (req : Request, res : Response) => {
-
+    const order_id = parseInt(req.params.id);
+    const deleted = await store.deleteOrder(order_id);
+    res.json(deleted);
 }
 
 
