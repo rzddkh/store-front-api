@@ -2,10 +2,6 @@ import app from '../../server';
 import supertest from 'supertest';
 const request = supertest(app);
 
-
-
-////  I need to figure out where do i delelete the user i add to get the token from!
-
 describe('Testing suite for product endpoints', () : void => { // adding a new user to the database
     const user = {
         "firstname": "John",
@@ -27,6 +23,12 @@ describe('Testing suite for product endpoints', () : void => { // adding a new u
     let token: string;
     let header: {};
 
+    const product = {
+        "product_name": "ps5",
+        "price": 499,
+        "category": "entertainment"
+    }
+    
     // adding a user to test the user endpoints
 
     beforeAll(async () => {
@@ -39,14 +41,8 @@ describe('Testing suite for product endpoints', () : void => { // adding a new u
         header = {
             Authorization: 'Bearer ' + token
         };
-        console.error(user1.body);
     });
 
-    const product = {
-        "product_name": "ps5",
-        "price": 499,
-        "category": "entertainment"
-    }
 
     it("testing INDEX: '/products' endpoint", async () => {
         const response = await request.get('/products');
