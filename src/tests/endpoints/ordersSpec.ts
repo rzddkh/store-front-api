@@ -94,11 +94,9 @@ describe('Testing suite for order endpoints \n', () => {
     // getting all products in an order(cart)
     it("testing getting all products in an order (cart) '/products_in_an_order/:id' endpoint", async () => { // first we add our second product to our order
         const response1 = await request.post('/addtoorder').send({order_id: order_id, product_id: product2_id, quantity: 1}).set(header);
-        // console.error(response1.body,"hello")
         expect(response1.status).toBe(200);
         const response = await request.get(`/products_in_an_order/${order_id}`).set(header);
         expect(response.status).toEqual(200);
-        console.error(response.body, "products in an order(cart)");
         // removing the second item from the order so we can delete the order at next test
         await request.delete('/removefromorder').send({order_id: order_id, product_id: product2_id}).set(header);
     })
@@ -113,7 +111,6 @@ describe('Testing suite for order endpoints \n', () => {
 
     // delete the order
     it("testing delete an order : '/deleteorder/:id endpoint", async () => {
-        console.error(order_id);
         const response = await request.delete(`/deleteorder/${order_id}`).set(header);
         expect(response.status).toEqual(200);
     });
