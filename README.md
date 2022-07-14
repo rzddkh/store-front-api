@@ -115,7 +115,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints <a name = "api_endpoints"></a>
 
-#### Products   <a name = "products_endpoints"></a> 
+### Products   <a name = "products_endpoints"></a> 
 
 - Index : '/products' [GET]
 - Show  : '/products/:id' [GET] [id(product_id) must to be provided in the request's params]
@@ -134,7 +134,7 @@ Get top 5 most popular products|'/fivemostpopular'|[GET]|[-]
 Get products by category|'/byCategory'|[GET]|[category must be provided in the body of the request]
 ---
 
-#### Users  <a name = "users_endpoints"></a>
+### Users  <a name = "users_endpoints"></a>
 
 - Index : '/users' [GET]  [token required]
 - Show : '/users/:id' [GET] [token required][id(user_id) must to be provided in the request's params]
@@ -151,7 +151,7 @@ Authenticate [jwt can be acquired for registered users]|'/authenticate'|[POST]|[
 DELETE   [Delete a user from database] | '/deleteuser/:id' | [DELETE]  | [token required] [id (user_id) must to be provided in the request's params]the request's params]
 ---
 
-#### Orders  <a name = "orders_endpoints"></a>
+### Orders  <a name = "orders_endpoints"></a>
 
 - Active Orders by user  : '/activeorder/:id' [GET] [token required] [id(user_id) must to be provided in the request's params]
 - Completed Orders by user : '/completedorder/:id' [GET]  [token required] [id(user_id) must to be provided in the request's params]
