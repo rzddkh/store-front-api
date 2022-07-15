@@ -30,11 +30,13 @@ You need to create a .env file with following contents in store-front-api folder
 ```
 POSTGRES_HOST=127.0.0.1
 POSTGRES_DB=full_stack_dev
+POSTGRES_DB_TEST=full_stack_test
 POSTGRES_USER=full_stack_user
 POSTGRES_PASSWORD=password123
 pepper=thisIsOurPepper*$&823*$%)_+
 SALT_ROUND=11
 TOKEN_SECRET=($%)S3CR3t*#TOk3n^
+ENV=test
 ```
 * docker
 
@@ -48,7 +50,7 @@ Step by step intallation guide to run and test the project.
 ```
 git clone https://github.com/rzddkh/store-front-api.git
 ```
-2. Create the .env file inside the store-front-api folder and paste the information above in prerequisites
+2. Create the .env file inside the store-front-api folder and paste the information from prerequisites section
 3. Install npm packages 
 ```
 npm install
@@ -65,40 +67,37 @@ docker ps
 ```
 docker exec -it [CONTAINER ID] bash
 ```
-7. Connect to the database: 
+7. Connect to the databases: 
 ```
 psql  -U full_stack_user -d full_stack_dev
+psql  -U full_stack_user -d full_stack_test
 ```
 8. Check to see the relations with the following command in psql. It should say no relation found:
 ```
 \dt
 ```
-9. Now open another terminal, and enter following command inside the store-front-api folder to start the migration:
-```
-db-migrate up
-```
-10. Now go back to psql terminal run the command '\dt' you should see the tables.
-```
-\dt
-```
-11. To run the preconfigured tests use the following command in store-front-api folder. You should see the results all passed: 
+9. To run the preconfigured tests first you need to set the ENV=test in the .env file. Then use the following command in store-front-api folder. You should see the results all passed: 
 ```
 npm run test 
 ```
-12. To start the server using tswatch use the following command:
+10. If you want to run the preconfigured test on dev database. First set the ENV=dev in the .env file. Then use the following command in store-front-api folder. You should see the results all passed: 
+```
+npm run test_dev_db
+```
+11. To start the server using ts-watch use the following command:
 ```
 npm run watch
 ```
-13. to compile ts to js run the following: 
+12. to compile ts to js run the following: 
 ```
 npm run tsc 
 ```
-14. to run the server with node as js file: 
+13. to run the server with node as js file: 
 ```
-cd dist then node server.js 
+cd dist
+node server.js 
 ```
-15. Feel free to test the endpoint with your prefered testing tool : such as Postman
-
+14. Feel free to test the endpoint with your prefered testing tool : such as Postman
 
 End with an example of getting some data out of the system or using it for a little demo.
 
