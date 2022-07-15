@@ -55,7 +55,7 @@ git clone https://github.com/rzddkh/store-front-api.git
 ```
 npm install
 ```
-4. Create a container using docker-compose.yml file:
+4. Create a container using docker-compose.yml file provided, it will make both databases for you(dev and test dbs):
 ```
 docker-compose up
 ```
@@ -76,11 +76,11 @@ psql  -U full_stack_user -d full_stack_test
 ```
 \dt
 ```
-9. To run the preconfigured tests first you need to set the ENV=test in the .env file. Then use the following command in store-front-api folder. You should see the results all passed: 
+9. To run the preconfigured tests first you need to set the ENV=test in the .env file. Then use the following command in store-front-api folder. You should see that the results are all passed: 
 ```
 npm run test 
 ```
-10. If you want to run the preconfigured test on dev database. First set the ENV=dev in the .env file. Then use the following command in store-front-api folder. You should see the results all passed: 
+10. If you want to run the preconfigured test on dev database. First set the ENV=dev in the .env file. Then use the following command in store-front-api folder. You should see that the results are all passed: 
 ```
 npm run test_dev_db
 ```
