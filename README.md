@@ -3,6 +3,8 @@
 ## Table of Contents
 + [About](#about)
 + [Getting Started](#getting_started)
+  + [Prerequisites](#prerequisites)
+  + [Installing](#installing)
 + [Technologies Used](#technologies_used)
 + [API Requirements](#api_requirements)
 + [API Endpoints](#api_endpoints)
@@ -11,13 +13,13 @@
   + [Orders Endpoints](#orders_endpoints)
 
 ## About <a name = "about"></a>
-A store front back end project.
+A store front back end project built using Node.js, Express and Psql. TypeScript is the main language used in this project.
 
 ## Getting Started <a name = "getting_started"></a>
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 
-### Prerequisites
+### Prerequisites <a name = "prerequisites"></a>
 * npm
 ```
 npm install npm@latest -g
@@ -38,7 +40,7 @@ TOKEN_SECRET=($%)S3CR3t*#TOk3n^
 
 You need to have docker installed on your system.
 
-### Installing
+### Installing <a name = "installing"></a>
 
 Step by step intallation guide to run and test the project.
 
