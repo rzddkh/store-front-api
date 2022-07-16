@@ -55,7 +55,7 @@ git clone https://github.com/rzddkh/store-front-api.git
 ```
 npm install
 ```
-4. Create a container using docker-compose.yml file provided, it will make both databases for you(dev and test dbs):
+4. Create a container using docker-compose.yml file provided, it will make dev database for you:
 ```
 docker-compose up
 ```
@@ -67,37 +67,40 @@ docker ps
 ```
 docker exec -it [CONTAINER ID] bash
 ```
-7. Connect to the databases: 
+7. Connect to the dev database: 
 ```
 psql  -U full_stack_user -d full_stack_dev
-psql  -U full_stack_user -d full_stack_test
 ```
 8. Check to see the relations with the following command in psql. It should say no relation found:
 ```
 \dt
 ```
-9. To run the preconfigured tests first you need to set the ENV=test in the .env file. Then use the following command in store-front-api folder. You should see that the results are all passed: 
+9. run the following command to create test database:
+```
+CREATE TABLE full_stack_test;
+```
+10. To run the preconfigured tests first you need to set the ENV=test in the .env file. Then use the following command in store-front-api folder. You should see that the results are all passed: 
 ```
 npm run test 
 ```
-10. If you want to run the preconfigured test on dev database. First set the ENV=dev in the .env file. Then use the following command in store-front-api folder. You should see that the results are all passed: 
+11. If you want to run the preconfigured test on dev database. First set the ENV=dev in the .env file. Then use the following command in store-front-api folder. You should see that the results are all passed: 
 ```
 npm run test_dev_db
 ```
-11. To start the server using ts-watch use the following command:
+12. To start the server using ts-watch use the following command:
 ```
 npm run watch
 ```
-12. to compile ts to js run the following: 
+13. to compile ts to js run the following: 
 ```
 npm run tsc 
 ```
-13. to run the server with node as js file: 
+14. to run the server with node as js file: 
 ```
 cd dist
 node server.js 
 ```
-14. Feel free to test the endpoint with your prefered testing tool : such as Postman
+15. Feel free to test the endpoint with your prefered testing tool : such as Postman
 
 End with an example of getting some data out of the system or using it for a little demo.
 
@@ -164,10 +167,10 @@ DELETE   [Delete a user from database] | '/deleteuser/:id' | [DELETE]  | [token 
 
 Description| Endpoint      | Type         | Requirements
 :--------: | :--------:    | :----------: | :----------:
-Getting active orders by user id|'/activeorder/:id'|[GET]|[token required]  [id (user_id) must to be provided in the request's params]
-Getting completed orders by user id|'/completedorder/:id'|[GET]|[token required]  [id (user_id) must to be provided in the request's params]
-Add a product to an order(cart)|'/addtoorder'|[POST]|[token required] [order_id, product_id, quantity must be provided in the body of request]
-Get all products in an order (cart) by order's id|'/products_in_an_order/:id'|[GET]|[token requirded] [order_id must be provided in request's params]
-Remove a product from an order(cart) | '/removefromorder' | [DELETE]  | [order_id, product_id must be provided in the body of request]
+Index [Getting active orders by user id]|'/activeorder/:id'|[GET]|[token required]  [id (user_id) must to be provided in the request's params]
+Index [Getting completed orders by user id]|'/completedorder/:id'|[GET]|[token required]  [id (user_id) must to be provided in the request's params]
+Create [Add a product to an order(cart)]|'/addtoorder'|[POST]|[token required] [order_id, product_id, quantity must be provided in the body of request]
+Index [Get all products in an order (cart) by order's id]|'/products_in_an_order/:id'|[GET]|[token requirded] [order_id must be provided in request's params]
+Delete [Remove a product from an order(cart)]| '/removefromorder' | [DELETE]  | [order_id, product_id must be provided in the body of request]
 Create [Create an order]|'/createorder/:id'|[POST]|[token required]   [id(user_id) must to be provided in the request's params]
 DELETE [Delete an order]|'/deleteorder/:id'|[DELETE]|[[token required]  [id(order_id) must be provided in request's params]   [order must not have any product attached to it. To remove it, products attached to it needs to be removed with '/removefromorder' first]
