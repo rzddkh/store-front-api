@@ -77,7 +77,7 @@ psql  -U full_stack_user -d full_stack_dev
 ```
 9. run the following command to create test database:
 ```
-CREATE TABLE full_stack_test;
+CREATE DATABASE full_stack_test;
 ```
 10. To run the preconfigured tests first you need to set the ENV=test in the .env file. Then use the following command in store-front-api folder. You should see that the results are all passed: 
 ```
