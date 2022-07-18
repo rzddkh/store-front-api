@@ -11,6 +11,7 @@
   + [Products Endpoints](#products_endpoints)
   + [Users Endpoints](#users_endpoints)
   + [Orders Endpoints](#orders_endpoints)
++ [Data Shapes](#data_shapes)
 
 ## About <a name = "about"></a>
 A store front back end project built using Node.js, Express and Psql. TypeScript is the main language used in this project.
@@ -41,6 +42,14 @@ ENV=test
 * docker
 
 You need to have docker installed on your system.
+
+* Database port:
+
+  5432
+
+* Server address:
+
+  "0.0.0.0:3000" or http://localhost:3000
 
 ### Installing <a name = "installing"></a>
 
@@ -174,3 +183,44 @@ Index [Get all products in an order (cart) by order's id]|'/products_in_an_order
 Delete [Remove a product from an order(cart)]| '/removefromorder' | [DELETE]  | [order_id, product_id must be provided in the body of request]
 Create [Create an order]|'/createorder/:id'|[POST]|[token required]   [id(user_id) must to be provided in the request's params]
 DELETE [Delete an order]|'/deleteorder/:id'|[DELETE]|[[token required]  [id(order_id) must be provided in request's params]   [order must not have any product attached to it. To remove it, products attached to it needs to be removed with '/removefromorder' first]
+
+## Data Shapes <a name='data_shapes'>
+
+#### Product 
+
+Column     | Type       | Constraint          
+:--------: |:--------:  | :----------:  
+ id        | Integer    | Primary_key|
+ name      |varchar     | NOT NULL
+ price     |Integer     | NOT NULL
+ category  |varchar(100)|NOT NULL
+
+#### User
+
+Column     |Type           | Constraint          
+:--------: | :--------:    | :----------:  
+ id        | Integer       | Primary_key|
+ firstName |varchar        | NOT NULL
+ lastName  |varchar        | NOT NULL
+ userName  |varchar        |NOT NULL UNIQUE
+ password  |text           |NOT NULL
+
+
+#### Orders
+
+Column     |Type           | Constraint          
+:--------: | :--------:    | :----------:  
+ id        | Integer       | Primary_key|
+ user_id   |bigint         | REFERENCES users(id)
+ status    |varchar(30)    | NOT NULL
+
+#### Order_product
+
+Column     |Type           | Constraint          
+:--------: | :--------:    | :----------:  
+ id        | Integer       | Primary_key|
+ order_id  |bigint         | REFERENCES orders(id)   
+ product_id|bigint         | REFERENCES products(id)
+ quantity  |Integer        |NOT NULL
+
+

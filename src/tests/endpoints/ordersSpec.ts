@@ -65,6 +65,7 @@ describe('Testing suite for order endpoints \n', () => {
     it("testing create an order : '/createorder/:id' endpoint", async () => {
         const response = await request.post(`/createorder/${user_id}`).set(header);
         expect(response.status).toEqual(200);
+        expect(parseInt(response.body.user_id)).toEqual(user_id);
         order_id = parseInt(response.body.id);
     });
 
@@ -72,6 +73,8 @@ describe('Testing suite for order endpoints \n', () => {
     it("testing '/activeorder/:id' endpoint ", async () => {
         const response = await request.get(`/activeorder/${user_id}`).set(header);
         expect(response.status).toEqual(200);
+        expect(response.body.length).toBeGreaterThan(0);
+   
 
     });
 
@@ -79,6 +82,7 @@ describe('Testing suite for order endpoints \n', () => {
     it("testing '/completedorder/:id' endpoint", async () => {
         const response = await request.get(`/completedorder/${user_id}`).set(header);
         expect(response.status).toEqual(200);
+        expect(response.body.length).toBe(0);
     });
 
     // adding a product to that an order (cart)
@@ -97,6 +101,7 @@ describe('Testing suite for order endpoints \n', () => {
         expect(response1.status).toBe(200);
         const response = await request.get(`/products_in_an_order/${order_id}`).set(header);
         expect(response.status).toEqual(200);
+        expect(response.body.length).toBeGreaterThan(1);
         // removing the second item from the order so we can delete the order at next test
         await request.delete('/removefromorder').send({order_id: order_id, product_id: product2_id}).set(header);
     })
@@ -113,5 +118,6 @@ describe('Testing suite for order endpoints \n', () => {
     it("testing delete an order : '/deleteorder/:id endpoint", async () => {
         const response = await request.delete(`/deleteorder/${order_id}`).set(header);
         expect(response.status).toEqual(200);
+        expect(parseInt(response.body.id)).toBe(order_id)
     });
 });

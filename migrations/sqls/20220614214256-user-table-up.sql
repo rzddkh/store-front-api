@@ -5,6 +5,6 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     firstName varchar NOT NULL,
     lastName varchar NOT NULL,
-    userName varchar NOT NULL Unique,
-    password varchar NOT NULL
+    userName varchar NOT NULL UNIQUE,
+    password text NOT NULL
 );

@@ -70,6 +70,7 @@ describe('Testing suite for product endpoints', () : void => { // adding a new u
     it("testing DELETE : '/deleteproduct/:id' endpoint", async () => {
         const response = await request.delete(`/deleteproduct/${product_id}`).set(header);
         expect(response.status).toEqual(200);
+        expect(response.body.product_name).toEqual('ps5');
     });
 
     it("testing ByCategory: '/bycategory' endpoint", async () => {

@@ -70,6 +70,8 @@ export class userStore { // getting all users
             throw new Error(`cant delete the user: ${err}`);
         }
     }
+
+    //authenticate a user
     async authenticate(userName : string, password : string): Promise < User | null > {
         try {
             const conn = await client.connect();

@@ -42,6 +42,7 @@ describe('Testing suite for user endpoints \n', () => { // new user to be added 
     it("testing INDEX : '/users' endpoint", async () => {
         const response = await request.get('/users').set(header);
         expect(response.status).toEqual(200);
+        expect(response.body.length).toBeGreaterThan(0);
     });
 
     it("testing SHOW : '/users/id' endpoint", async () => {
