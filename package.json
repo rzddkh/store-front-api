@@ -6,8 +6,8 @@
     "scripts": {
         "start": "node src/server.ts",
         "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-        "test": "db-migrate --env test up && jasmine-ts && db-migrate --env test reset ",
-        "test_dev_db": "db-migrate --env dev up && jasmine-ts && db-migrate --env dev reset ",
+        "test": "ENV=test db-migrate --env test up && jasmine-ts && db-migrate --env test reset ",
+        "test_dev_db": "ENV=dev && db-migrate --env dev up && jasmine-ts && db-migrate --env dev reset ",
         "tsc": "tsc"
     },
     "compilerOptions": {
