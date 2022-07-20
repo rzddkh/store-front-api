@@ -111,8 +111,6 @@ node server.js
 ```
 15. Feel free to test the endpoint with your prefered testing tool : such as Postman
 
-End with an example of getting some data out of the system or using it for a little demo.
-
 ## Technologies used <a name = "technologies_used"></a>
 - Postgres for the database
 - Node/Express for the application logic
